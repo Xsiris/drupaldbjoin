@@ -1,0 +1,11 @@
+name: DataAnnotation
+type: theme
+description: Theme to test AI responses to module & theme development prompts
+core_version_requirement: '>=9.2'
+libraries:
+  - DataAnnotation/global-styling
+base theme: stable9
+regions:
+  header: 'Header'
+  content: 'Content'
+  footer: 'Footer'

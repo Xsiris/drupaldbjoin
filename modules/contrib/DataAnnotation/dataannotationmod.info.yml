@@ -1,0 +1,6 @@
+name: DataAnnotationMod
+description: Module to test AI responses to module & theme development prompts
+package: Custom
+
+type: module
+core_version_requirement: ^9.4 || ^10

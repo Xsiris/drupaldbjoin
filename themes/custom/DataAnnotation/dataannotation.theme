@@ -1,0 +1,49 @@
+<?php
+
+use Drupal\Core\Database\Connection;
+
+/**
+ * Implements hook_preprocess_HOOK() for node templates.
+ */
+function dataannotation_preprocess_node(&$variables) {
+    xdebug_break();
+  // Only proceed if it's one of your custom node types.
+$node = $variables['node'];
+if ($node->getType() !== 'custom_node_1') {
+  return;
+}
+
+// Find the target node.
+$target_node = find_target_node('custom_node_2');
+
+if ($target_node) {
+  // Update the reference field.
+  $node->set('field_node_1_ref', $target_node->id());
+  $node->save();
+}
+}
+
+/**
+ * Finds a node of a specific type with a specific field value.
+ */
+function find_target_node($node_type) {
+    $query = \Drupal::entityQuery('node')
+      ->accessCheck(FALSE)
+      ->condition('type', $node_type)
+      ->condition('field_text_2', 'Sample123')
+      ->range(0, 1); // Limit to one result.
+    
+    // Exclude nodes that already have a reference.
+    if ($node_type == 'custom_node_1') {
+      $query->notExists('field_node_1_ref');
+    }
+  
+    $nids = $query->execute();
+  
+    if (!empty($nids)) {
+      $nid = reset($nids);
+      return \Drupal\node\Entity\Node::load($nid);
+    }
+  
+    return NULL;
+  }
